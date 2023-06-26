@@ -84,7 +84,9 @@ def export_icon_oem(
     time_profiles: dict[str, list[TemporalProfile]] = {}
     vertical_profiles: dict[str, VerticalProfile] = {}
 
+    print(inv._gdf_columns)
     for categorie, sub in inv._gdf_columns:
+    # for categorie, sub in [("all", "CO2")]: ## for odiac case
         name = f"{categorie}-{sub}"
 
         # Convert from kg/year to kg/m2/s

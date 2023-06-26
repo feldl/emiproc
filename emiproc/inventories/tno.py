@@ -84,13 +84,13 @@ class TNO_Inventory(Inventory):
         nc_file: PathLike,
         substances: list[Substance] = ["CO2", "CO", "NOx", "CH4", "VOC"],
         substances_mapping: dict[str, str] = {
-            "co2_ff": "CO2",
-            "co2_bf": "CO2",
-            "co_ff": "CO",
-            "co_bf": "CO",
-            "nox": "NOx",
+            # "co2_ff": "CO2",
+            # "co2_bf": "CO2",
+            # "co_ff": "CO",
+            # "co_bf": "CO",
+            # "nox": "NOx",
             "ch4": "CH4",
-            "nmvoc": "VOC",
+            # "nmvoc": "VOC",
         },
     ) -> None:
         """Create a TNO_Inventory.
@@ -160,8 +160,8 @@ class TNO_Inventory(Inventory):
         t_profiles, t_profiles_indexes = read_temporal_profiles(
             nc_file.parent,
             profile_csv_kwargs={
-                "cat_colname": "GNFR_Category",
-                "read_csv_kwargs": {"sep": ";", "header": 6, "encoding": "latin"},
+                "cat_colname": "GNFR_Category_Name",
+                "read_csv_kwargs": {"sep": ";", "header": 6, "encoding": "latin", "quotechar": ","},
             },
         )
         # Check that the substances in the profiles match the ones in the
@@ -233,13 +233,13 @@ class TNO_Inventory(Inventory):
                 groupp_mapping[sub_to] = []
             groupp_mapping[sub_to].append(sub_from)
 
-        self.t_profiles_groups, self.t_profiles_indexes = group_profiles_indexes(
-            t_profiles,
-            t_profiles_indexes,
-            weights,
-            groupp_mapping,
-            groupping_dimension='substance',
-        )
+        # self.t_profiles_groups, self.t_profiles_indexes = group_profiles_indexes(
+        #     t_profiles,
+        #     t_profiles_indexes,
+        #     weights,
+        #     groupp_mapping,
+        #     groupping_dimension='substance',
+        # )
 
 
 if __name__ == "__main__":

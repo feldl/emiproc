@@ -504,17 +504,17 @@ def from_csv(
     elif " jan " in df.columns:
         data_columns = [
             " jan ",
-            " feb ",
+            " feb  ",
             " mar ",
             " apr ",
             " may ",
             " jun ",
             " jul ",
-            " aug ",
+            " aug  ",
             " sep ",
             " oct ",
-            " nov ",
-            " dec ",
+            " nov  ",
+            " dec",
         ]
         profile = MounthsProfile
     elif "January" in df.columns:
@@ -546,6 +546,13 @@ def from_csv(
     else:
         raise NotImplementedError(f"Cannot guess the profile from {file=}")
 
+    for col in df.columns:
+        if "," in col:
+            newcol = col.replace(",", "")
+            print(col, newcol)
+            df.rename(columns={col: newcol}, inplace=True)
+    print(df.columns)
+
     # Check that all the data columns are in the file
     for col in data_columns:
         if not col in df.columns:
@@ -565,6 +572,7 @@ def from_csv(
         ratios = np.array([row[col] for col in data_columns])
 
         # Check if scaling factors are given instead of ratios
+        print(ratios, len(ratios))
         if np.isclose(ratios.sum(), len(ratios)):
             ratios = ratios / ratios.sum()
         elif not np.isclose(ratios.sum(), 1.0):

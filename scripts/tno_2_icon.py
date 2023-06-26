@@ -11,14 +11,14 @@ from emiproc.exports.icon import export_icon_oem, TemporalProfilesTypes
 
 
 # %% Declare path of the TNO netcdf file
-nc_file = r"C:\Users\coli\Documents\emiproc\files\TNO_6x6_GHGco_v4_0\TNO_GHGco_v4_0_year2018.nc"
+nc_file = "/home/lena/TNO/AP_2021_2022/CAMS-REG-AP_v6_1_emissions_year2021.nc"
 
 # %% Load the inventory to an object
 inv = TNO_Inventory(nc_file)
 
 
 # %% Load the icon grid
-grid_file = Path(r"C:\Users\coli\Documents\ZH-CH-emission\icon_europe_DOM01.nc")
+grid_file = Path("/home/lena/Projects/my_runscripts/data_preparation/areaemission/boxArea/domain1_DOM01.nc")
 icon_grid = ICONGrid(grid_file)
 
 # %%

@@ -15,6 +15,7 @@ import math
 from netCDF4 import Dataset
 from shapely.geometry import Polygon, Point, box, LineString, MultiPolygon
 from shapely.ops import split
+import rioxarray as rxr
 
 WGS84 = 4326
 WGS84_PROJECTED = 3857
@@ -95,7 +96,7 @@ class Grid:
         """Return all the cells as a list of polygons."""
         return [
             Polygon(zip(*self.cell_corners(i, j)))
-            for i in range(self.nx)
+            for i in range(self.nx)  # outer loop
             for j in range(self.ny)
         ]
 
@@ -950,3 +951,78 @@ class ICONGrid(Grid):
             )
         )
         self.gdf.loc[gdf_inter.index, "geometry"] = gdf_inter.geometry
+
+
+class ODIACGrid(RegularGrid):
+
+    def __init__(self, dataset_path, name="ODIAC"):
+
+        ds = rxr.open_rasterio(dataset_path)[0]
+        ds = ds.sortby("x")
+        ds = ds.sortby("y")
+        # ds = ds.T
+
+        # self.lon_var = np.unique(ds["x"])
+        # self.lat_var = np.unique(ds["y"])
+        self.lon_var = ds["x"].values
+        self.lat_var = ds["y"].values
+
+        self.nx = len(self.lon_var)
+        self.ny = len(self.lat_var)
+
+        # The lat/lon values are the cell-centers
+        self.dx = (self.lon_var[-1] - self.lon_var[0]) / (self.nx - 1)
+        self.dy = (self.lat_var[-1] - self.lat_var[0]) / (self.ny - 1)
+
+        # Compute the cell corners
+        x = self.lon_var
+        print("x", x)
+        y = self.lat_var
+        print("y", y)
+        dx2 = self.dx / 2
+        dy2 = self.dy / 2
+
+        self.cell_x = np.array([x + dx2, x + dx2, x - dx2, x - dx2])
+        print(self.cell_x.shape, "cellx shape")
+
+        self.cell_y = np.array([y + dy2, y - dy2, y - dy2, y + dy2])
+
+        Grid.__init__(self, name=name, crs=WGS84)
+
+    def cell_corners(self, i, j):
+        """Return the corners of the cell with indices (i,j).
+
+        See also the docstring of Grid.cell_corners.
+
+        Parameters
+        ----------
+        i : int
+        j : int
+
+        Returns
+        -------
+        tuple(np.array(shape=(4,), dtype=float),
+              np.array(shape=(4,), dtype=float))
+            Arrays containing the x and y coordinates of the corners
+        """
+        return self.cell_x[:, i], self.cell_y[:, j]
+
+    @property
+    def lon_range(self):
+        """Return an array containing all the longitudinal points on the grid.
+
+        Returns
+        -------
+        np.array(shape=(nx,), dtype=float)
+        """
+        return self.lon_var
+
+    @property
+    def lat_range(self):
+        """Return an array containing all the latitudinal points on the grid.
+
+        Returns
+        -------
+        np.array(shape=(ny,), dtype=float)
+        """
+        return self.lat_var

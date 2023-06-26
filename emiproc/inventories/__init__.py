@@ -322,11 +322,14 @@ class Inventory:
         """All the columsn but not the geometric columns."""
         if self.gdf is None:
             return []
-        return [
+        print(self.gdf.columns)
+        a = [
             col
             for col in self.gdf.columns
             if not isinstance(self.gdf[col].dtype, gpd.array.GeometryDtype)
         ]
+        print(a)
+        return a
 
     def to_crs(self, *args, **kwargs):
         """Same as geopandas.to_crs() but for inventories.

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tracers SYSTEM "tracers.dtd">
+
+<tracers>
+  <chemtracer id="TRCO2">
+    <tag001 type="char">chemtr</tag001>
+    <lfeedback type='int'> 1 </lfeedback>
+    <mol_weight type="real">4.401E-2</mol_weight>
+    <transport type="char"> hadv52aero </transport>
+    <unit type="char">mol mol-1</unit>
+    <init_mode type="int">1</init_mode>
+    <init_name type="char">CO2</init_name>
+    <c_solve type="char">passive</c_solve>
+    <latbc type="char">file</latbc>
+    <emiss_ANT type="char" inum_levs="1">CO2_R_ANT_manualArea</emiss_ANT>
+  </chemtracer>
+  <chemtracer id="TRCH4">
+    <tag001 type="char">chemtr</tag001>
+    <lfeedback type='int'> 1 </lfeedback>
+    <mol_weight type="real">4.401E-2</mol_weight>
+    <transport type="char"> hadv52aero </transport>
+    <unit type="char">mol mol-1</unit>
+    <init_mode type="int">1</init_mode>
+    <init_name type="char">CO2</init_name>
+    <c_solve type="char">passive</c_solve>
+    <latbc type="char">file</latbc>
+  </chemtracer>
+</tracers>
