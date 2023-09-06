@@ -5,8 +5,9 @@ if __name__ == "__main__":
     from emiproc.inventories.odiac import ODIAC_Inventory
     from pathlib import Path
 
-    nc_file = "/home/lenaf/Data/Emissions/odiac/clip6.tif"
-    inv = ODIAC_Inventory(nc_file)
+    tif_file = "/home/lenaf/Data/Emissions/odiac/clip6.tif"
+    days_of_month = 31  # in May
+    inv = ODIAC_Inventory(tif_file, days_of_month)
 
     print("created inventory ...")
     grid_file = Path(
