@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, Iterable
 from shapely.geometry import Point, MultiPolygon, Polygon
 from emiproc.utilities import ProgressIndicator
 from scipy.sparse import coo_array, dok_matrix
-from emiproc.grids import Grid
+from emiproc.grids import Grid, WGS84_NSIDC
 
 
 logger = logging.getLogger("emiproc.regrid")
@@ -210,8 +210,8 @@ def calculate_weights_mapping(
     elif method == "new":
 
         # Merge the two geometries using intersections
-        gdf_in = gpd.GeoDataFrame(geometry=shapes_vect)
-        gdf_out = gpd.GeoDataFrame(geometry=shapes_looped)
+        gdf_in = gpd.GeoDataFrame(geometry=shapes_vect).to_crs(WGS84_NSIDC)
+        gdf_out = gpd.GeoDataFrame(geometry=shapes_looped).to_crs(WGS84_NSIDC)
         gdf_weights = gdf_in.sjoin(gdf_out, rsuffix='out')
         gdf_weights = gdf_weights.merge(gdf_out, left_on="index_out", right_index=True, suffixes=("", "_out"))
         gdf_weights.index.name = 'index_inv'
