@@ -932,10 +932,7 @@ class ODIACGrid(RegularGrid):
         ds = rxr.open_rasterio(dataset_path)[0]
         ds = ds.sortby("x")
         ds = ds.sortby("y")
-        # ds = ds.T
 
-        # self.lon_var = np.unique(ds["x"])
-        # self.lat_var = np.unique(ds["y"])
         self.lon_var = ds["x"].values
         self.lat_var = ds["y"].values
 
@@ -948,15 +945,12 @@ class ODIACGrid(RegularGrid):
 
         # Compute the cell corners
         x = self.lon_var
-        # print("x", x)
         y = self.lat_var
-        # print("y", y)
+
         dx2 = self.dx / 2
         dy2 = self.dy / 2
 
         self.cell_x = np.array([x + dx2, x + dx2, x - dx2, x - dx2])
-        # print(self.cell_x.shape, "cellx shape")
-
         self.cell_y = np.array([y + dy2, y - dy2, y - dy2, y + dy2])
 
         Grid.__init__(self, name=name, crs=WGS84)
