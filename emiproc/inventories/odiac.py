@@ -66,8 +66,9 @@ class ODIAC_Inventory(Inventory):
         Convert to kg CO2 per yr per gridcell (expected by emiproc).
         """
 
-        carbon_per_co2 = 12.011 / 44.009
-        month_per_yr = days_of_month / 365.25
+        kg_co2_per_kg_carbon = 44.009 / 12.011
+        s_per_yr = 365.25 * 24 * 60 * 60
+        s_per_month = days_of_month * 24 * 60 * 60
         kg_per_t = 1e3
 
-        return da * kg_per_t / carbon_per_co2 / month_per_yr
+        return da * kg_per_t * kg_co2_per_kg_carbon / s_per_month * s_per_yr
